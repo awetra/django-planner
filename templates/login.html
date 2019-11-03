@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container login-container">
+    <div class="row">
+        <div class="col-lg-4 offset-lg-4">
+            <h3 class="login-title">Вход в систему</h3>
+            <div class="login">
+                <form method="post" class="">
+                    {% csrf_token %}
+                    {% if auth_errors %}
+                        <div class="form-group login-errors">
+                            <p>Неправильный логин или пароль</p>
+                        </div>
+                    {% endif %}
+                    <div class="form-group">
+                        <label>Логин:</label>
+                        <input name="username" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Пароль:</label>
+                        <input type="password" name="password" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-login">Войти</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

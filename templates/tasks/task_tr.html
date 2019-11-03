@@ -1,0 +1,38 @@
+{% load tasks_extra %}
+<td>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1"
+        {% if task.status.text == 'Завершено' %}checked{% endif %}
+        {% if task.time_is_over %}disabled{% endif %}
+        >
+        {% if not task.time_is_over %}
+            <a href="{% url 'change_status_task' pk=task.id %}?{% url_replace %}" class="change-status"></a>
+        {% endif %}
+    </div>
+</td>
+<td>{{ task.status }}</td>
+<td class="task-text">{{ task.text }}</td>
+{% if task.expected_end_date %}
+    <td >{{ task.expected_end_date }}</td>
+{% else %}
+    <td>
+        <div class="none"></div>
+    </td>
+{% endif %}
+{% if task.actual_end_date %}
+    <td>{{ task.actual_end_date }}</td>
+{% else %}
+    <td>
+        <div class="none"></div>
+    </td>
+{% endif %}
+{% if task.contact %}
+    <td>{{ task.contact }}</td>
+{% else %}
+    <td>
+        <div class="none"></div>
+    </td>
+{% endif %}
+<td>
+    <a href="{% url 'delete_task' pk=task.id %}?{% url_replace %}">&#10060;</a>
+</td>

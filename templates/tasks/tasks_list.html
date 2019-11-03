@@ -1,0 +1,115 @@
+{% extends  'tasks/base.html' %}
+{% load tasks_extra %}
+
+{% block content %}
+
+<div class="container">
+    <div class="tasks-filter">
+        <form method="get">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Статус</label>
+                    <select name="status" class="form-control form-control-sm" id="inlineFormCustomSelectPref"> 
+                        {% for status in statuses %}
+                            <option value="{{ status.id }}" {% if status.id == selected_status_id %}selected{% endif %}>{{ status.text }}</option>
+                        {% endfor %}
+                        <option {% if not selected_status_id %}selected{% endif %}>Все</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Начальная формальная дата выполнения</label>
+                    <input type="date" value="{{ start_date }}" name="start_date" class="form-control form-control-sm" placeholder="Начальная дата">
+                </div>
+                <div class="form-group">
+                    <label>Конечная формальная дата выполнения</label>
+                    <input type="date" value="{{ end_date }}" name="end_date" class="form-control form-control-sm" placeholder="Конечная дата">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <button class="btn btn-outline-primary btn-sm btn-sm btn-filter" type="submit">Фильтр</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    {% if tasks %}
+        <div class="tasks-list">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>&#10003;</th>
+                            <th scope="col">Статус</th>
+                            <th scope="col">Задание</th>
+                            <th scope="col">Формальное время выполнения</th>
+                            <th scope="col">Фактическое время выполнения</th>
+                            <th scope="col">Контакт</th>
+                            <th scope="col">&#10060;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for task in tasks %}
+                            {% if task.status.text == 'Выполняется' %}
+                                <tr class="table-warning">
+                                    {% include 'tasks/task_tr.html' %}
+                                </tr>
+                            {% elif task.status.text == 'Просрочено' %}
+                                <tr class="table-danger">
+                                    {% include 'tasks/task_tr.html' %}
+                                </tr>
+                            {% elif task.status.text == 'Завершено' %}
+                                <tr class="table-success">
+                                    {% include 'tasks/task_tr.html' %}
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+        </div>
+        <nav class="paginator" aria-label="...">
+            <div class="row">
+                <div class="col-lg-4 offset-lg-4">
+                  <ul class="pagination">
+                    {% if tasks.has_previous %}
+                        <li class="page-item">
+                          <a class="page-link" href="?{% url_replace page=tasks.previous_page_number %}">Предыдущая</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link">Предыдущая</span>
+                        </li>
+                    {% endif %}
+                    {% for page_number in tasks.paginator.page_range %}
+                        {% if tasks.number == page_number %} 
+                            <li class="page-item active">
+                              <span class="page-link">
+                                {{ page_number }}
+                                <span class="sr-only">(current)</span>
+                              </span>
+                            </li>
+                        {% else %}   
+                            <li class="page-item">
+                                <a class="page-link" href="?{% url_replace page=page_number %}">{{ page_number }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if tasks.has_next %}
+                        <li class="page-item">
+                          <a class="page-link" href="?{% url_replace page=tasks.next_page_number %}">Cледующая</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link">Следующая</span>
+                        </li>
+                    {% endif %}
+                  </ul>
+                </div>
+            </div>
+        </nav>
+    {% else %}
+        <div class="tasks-count-ziro">
+            <h3>По данному запросу нет ни одной записи</h3>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'tasks/base.html' %}
+
+
+{% block content %}
+    <div class="container">
+        <div class="create-task">
+            <h3>Создание нового задания</h3>
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-row">
+                    <div class="form-group col-lg-8 offset-lg-2">
+                        <label>Задание</label>
+                        <input type="text" name="text" class="form-control" required="" placeholder="Введите текст задания">
+                    </div>
+                    <div class="form-group col-lg-8 offset-lg-2">
+                        <label>Формальная дата выполнения</label>
+                        <input type="datetime-local" name="expected_end_date" class="form-control" required="">
+                    </div>
+                    {% if validation_error %}
+                        <div class="form-group col-lg-8 offset-lg-2 validation-error">
+                            Введены некорректные дата и время
+                        </div>
+                    {% endif %}
+                    <div class="form-group col-lg-8 offset-lg-2">
+                        <label>Контакт</label>
+                        <input type="text" name="contact" class="form-control" placeholder="Введите имя контакта">
+                        <small class="form-text text-muted">Не обязательное заполнение<small>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-lg-2 offset-lg-5">
+                        <button type="submit" class="btn btn-outline-success btn-create-task">Создать</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
