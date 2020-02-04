@@ -3,7 +3,6 @@ from django.contrib import auth
 
 
 def log_in(request):
-
     context = {}
 
     if request.method == 'POST':

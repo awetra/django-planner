@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'tasks',
+    'accounts'
 ]
 
 MIDDLEWARE = [
@@ -128,4 +129,4 @@ STATICFILES_DIRS = (
 )
 
 
-LOGIN_URL = 'login/'
+LOGIN_URL = 'accounts/login/'
